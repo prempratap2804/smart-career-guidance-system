@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Career Guidance System</title>
+<style>
+  :root {
+    --bg1: #0f172a;
+    --bg2: #1e293b;
+    --accent: #6366f1;
+    --accent2: #8b5cf6;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --card: #1e293bcc;
+    --border: #334155;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+
+  .wrap { width: 100%; max-width: 640px; }
+
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+  }
+
+  form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(6px);
+  }
+
+  .field { margin-bottom: 18px; }
+
+  label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+
+  select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #0f172a;
+    color: var(--text);
+    font-size: 0.95rem;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  select:focus { border-color: var(--accent); }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  button:hover { opacity: 0.9; }
+
+  button.loading { opacity: 0.6; pointer-events: none; }
+
+  #result-section { margin-top: 24px; display: none; }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .result-card h2 {
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .career-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 18px;
+  }
+
+  .top3-list { text-align: left; margin-top: 16px; }
+
+  .top3-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #0f172a;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  .top3-bar {
+    height: 6px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    margin-top: 4px;
+  }
+
+  .result-error {
+    color: #f87171;
+    font-size: 0.95rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Smart Career Guidance System</h1>
+  <p class="subtitle">Tell us about yourself and get a personalised career recommendation</p>
+
+  <form id="careerForm">
+
+    <div class="field">
+      <label for="interestArea">Area of Interest</label>
+      <select id="interestArea" required>
+        <option value="" disabled selected>Select your interest…</option>
+        <option value="AI/ML">🤖 AI / ML</option>
+        <option value="Data">📊 Data</option>
+        <option value="Web Development">🌐 Web Development</option>
+        <option value="Software Development">💻 Software Development</option>
+        <option value="Cybersecurity">🛡️ Cybersecurity</option>
+        <option value="Networking">🔌 Networking</option>
+        <option value="Cloud Computing">☁️ Cloud Computing</option>
+        <option value="Design">🎨 Design</option>
+        <option value="Business">💼 Business</option>
+        <option value="Marketing">📣 Marketing</option>
+      </select>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="aptitude">Aptitude Level</label>
+        <select id="aptitude" required>
+          <option value="" disabled selected>Select…</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="communication">Communication Skills</label>
+        <select id="communication" required>
+          <option value="" disabled selected>Select…</option>
+          <option value="Poor">Poor</option>
+          <option value="Average">Average</option>
+          <option value="Good">Good</option>
+          <option value="Excellent">Excellent</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="programming">Programming Skill</label>
+        <select id="programming" required>
+          <option value="" disabled selected>Select…</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="math">Mathematical Ability</label>
+        <select id="math" required>
+          <option value="" disabled selected>Select…</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="problemSolving">Problem Solving Skill</label>
+        <select id="problemSolving" required>
+          <option value="" disabled selected>Select…</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="creativity">Creativity Level</label>
+        <select id="creativity" required>
+          <option value="" disabled selected>Select…</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="workPref">Work Preference</label>
+      <select id="workPref" required>
+        <option value="" disabled selected>Select…</option>
+        <option value="Individual">Individual</option>
+        <option value="Team">Team</option>
+        <option value="Both">Both</option>
+      </select>
+    </div>
+
+    <button type="submit" id="submitBtn">Predict My Career</button>
+
+  </form>
+
+  <div id="result-section"></div>
+
+</div>
+
+<script>
+document.getElementById("careerForm").addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.classList.add("loading");
+    submitBtn.textContent = "Analysing…";
+
+    const resultSection = document.getElementById("result-section");
+
+    const data = {
+        interest_area:         document.getElementById("interestArea").value,
+        aptitude_level:         document.getElementById("aptitude").value,
+        communication_skills:   document.getElementById("communication").value,
+        programming_skill:      document.getElementById("programming").value,
+        mathematical_ability:   document.getElementById("math").value,
+        problem_solving_skill:  document.getElementById("problemSolving").value,
+        creativity_level:       document.getElementById("creativity").value,
+        work_preference:        document.getElementById("workPref").value
+    };
+
+    try {
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            resultSection.innerHTML = `
+                <div class="result-card">
+                    <h2>Something Went Wrong</h2>
+                    <div class="result-error">${result.error || "Unable to generate a prediction."}</div>
+                </div>
+            `;
+            resultSection.style.display = "block";
+            return;
+        }
+
+        const top3Html = result.top3.map(item => `
+            <div class="top3-item">
+                <span>${item.career}</span>
+                <span>${item.confidence}%</span>
+            </div>
+        `).join("");
+
+        resultSection.innerHTML = `
+            <div class="result-card">
+                <h2>Recommended Career</h2>
+                <div class="career-name">${result.career}</div>
+                <div class="top3-list">
+                    <label style="margin-bottom:8px; display:block;">Top matches</label>
+                    ${top3Html}
+                </div>
+            </div>
+        `;
+
+        resultSection.style.display = "block";
+
+    } catch (error) {
+
+        resultSection.innerHTML = `
+            <div class="result-card">
+                <h2>Something Went Wrong</h2>
+                <div class="result-error">Could not reach the server. Please make sure the Flask app is running.</div>
+            </div>
+        `;
+        resultSection.style.display = "block";
+
+    } finally {
+
+        submitBtn.classList.remove("loading");
+        submitBtn.textContent = "Predict My Career";
+
+    }
+
+});
+</script>
+
+</body>
+</html>
